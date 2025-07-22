@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Route Optimization Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Supply Chain Route Optimization</h1>
+            <p class="header-subtitle">Advanced algorithms and machine learning for logistics optimization</p>
+        </header>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard">
+            <!-- Control Panel -->
+            <div class="control-panel card">
+                <div class="card__header">
+                    <h3>Optimization Controls</h3>
+                </div>
+                <div class="card__body">
+                    <div class="form-group">
+                        <label class="form-label">Scenario</label>
+                        <select id="scenario-select" class="form-control">
+                            <option value="urban">Urban Delivery</option>
+                            <option value="rural">Rural Routes</option>
+                            <option value="multi-depot">Multi-Depot System</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Algorithm</label>
+                        <select id="algorithm-select" class="form-control">
+                            <option value="dijkstra">Dijkstra</option>
+                            <option value="genetic">Genetic Algorithm</option>
+                            <option value="ant-colony">Ant Colony Optimization</option>
+                            <option value="reinforcement">Reinforcement Learning</option>
+                            <option value="ml-hybrid">ML Hybrid</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Vehicle Capacity</label>
+                        <input type="range" id="capacity-slider" min="20" max="100" value="50" class="form-control">
+                        <span id="capacity-value">50</span> units
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Fuel Cost ($/mile)</label>
+                        <input type="number" id="fuel-cost" class="form-control" value="0.15" step="0.01">
+                    </div>
+
+                    <button id="optimize-btn" class="btn btn--primary btn--full-width">Optimize Routes</button>
+                </div>
+            </div>
+
+            <!-- Interactive Map -->
+            <div class="map-container card">
+                <div class="card__header">
+                    <h3>Route Visualization</h3>
+                    <div class="map-controls">
+                        <button id="add-location-btn" class="btn btn--secondary btn--sm">Add Location</button>
+                        <button id="clear-routes-btn" class="btn btn--outline btn--sm">Clear Routes</button>
+                    </div>
+                </div>
+                <div class="card__body">
+                    <canvas id="route-map" width="600" height="400"></canvas>
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <span class="legend-color depot"></span>
+                            <span>Depot</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color delivery"></span>
+                            <span>Delivery Point</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color route"></span>
+                            <span>Optimized Route</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="metrics-panel card">
+                <div class="card__header">
+                    <h3>Performance Metrics</h3>
+                </div>
+                <div class="card__body">
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="route-length">245</div>
+                            <div class="metric-label">Route Length (km)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="cost-savings">15%</div>
+                            <div class="metric-label">Cost Savings</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="delivery-time">6.8h</div>
+                            <div class="metric-label">Delivery Time</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="fuel-cost">$36.75</div>
+                            <div class="metric-label">Fuel Cost</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Algorithm Comparison -->
+        <div class="comparison-section">
+            <h2>Algorithm Performance Comparison</h2>
+            <div class="comparison-grid">
+                <div class="card">
+                    <div class="card__body">
+                        <img src="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/87b845e27157abb2fea8e9f059276050/4255471e-1402-4b60-a8d7-eba6f7a13166/5a893622.png" alt="Algorithm Performance Comparison" class="chart-image">
+                    </div>
+                </div>
+                <div class="algorithm-details card">
+                    <div class="card__header">
+                        <h3 id="selected-algorithm-name">Dijkstra Algorithm</h3>
+                    </div>
+                    <div class="card__body">
+                        <p id="algorithm-description">Classic shortest path algorithm, guaranteed optimal for single-source shortest paths</p>
+                        <div class="algorithm-stats">
+                            <div class="stat-row">
+                                <span class="stat-label">Complexity:</span>
+                                <span id="algorithm-complexity">O((V + E) log V)</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Best For:</span>
+                                <span id="algorithm-best-for">Simple point-to-point routing with fixed costs</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Computation Time:</span>
+                                <span id="algorithm-time">0.8s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Machine Learning Features -->
+        <div class="ml-section">
+            <h2>Machine Learning & AI Features</h2>
+            <div class="ml-features-grid">
+                <div class="card">
+                    <div class="card__header">
+                        <h4>Demand Forecasting</h4>
+                    </div>
+                    <div class="card__body">
+                        <p>Predict delivery volumes 30 days ahead using historical data, seasonality, and external factors</p>
+                        <div class="forecast-chart">
+                            <canvas id="demand-forecast" width="300" height="150"></canvas>
+                        </div>
+                        <button class="btn btn--secondary btn--sm">Run Forecast</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h4>Dynamic Route Adjustment</h4>
+                    </div>
+                    <div class="card__body">
+                        <p>Real-time route optimization based on traffic, weather, and demand changes</p>
+                        <div class="adjustment-controls">
+                            <label class="form-label">Traffic Condition</label>
+                            <select class="form-control">
+                                <option>Normal</option>
+                                <option>Heavy</option>
+                                <option>Extreme</option>
+                            </select>
+                            <button class="btn btn--secondary btn--sm mt-8">Adjust Routes</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h4>Inventory Optimization</h4>
+                    </div>
+                    <div class="card__body">
+                        <p>AI-powered placement of inventory to minimize last-mile delivery distances</p>
+                        <div class="inventory-stats">
+                            <div class="stat-small">
+                                <span class="stat-value">73%</span>
+                                <span class="stat-label">Placement Efficiency</span>
+                            </div>
+                            <div class="stat-small">
+                                <span class="stat-value">2.1km</span>
+                                <span class="stat-label">Avg Distance</span>
+                            </div>
+                        </div>
+                        <button class="btn btn--secondary btn--sm">Optimize Placement</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h4>Risk Assessment</h4>
+                    </div>
+                    <div class="card__body">
+                        <p>Predict and mitigate supply chain disruptions before they occur</p>
+                        <div class="risk-indicators">
+                            <div class="risk-item">
+                                <span class="status status--success">Low</span>
+                                <span>Weather Risk</span>
+                            </div>
+                            <div class="risk-item">
+                                <span class="status status--warning">Medium</span>
+                                <span>Traffic Risk</span>
+                            </div>
+                            <div class="risk-item">
+                                <span class="status status--error">High</span>
+                                <span>Demand Surge</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case Studies -->
+        <div class="case-studies-section">
+            <h2>Real-World Success Stories</h2>
+            <div class="case-studies-chart">
+                <img src="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/87b845e27157abb2fea8e9f059276050/0d4a26e0-0156-455f-894a-cccba8e85ec4/5b42bbf5.png" alt="Real-World Supply Chain Optimization Results" class="chart-image">
+            </div>
+            
+            <div class="case-studies-grid">
+                <div class="card case-study-card" data-company="amazon">
+                    <div class="card__header">
+                        <h4>Amazon</h4>
+                        <span class="status status--success">AI + Robotics</span>
+                    </div>
+                    <div class="card__body">
+                        <p>Implemented AI-driven warehouse robotics and predictive inventory placement</p>
+                        <div class="results">
+                            <div class="result-item">
+                                <span class="result-value">25%</span>
+                                <span class="result-label">Cost Reduction</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-value">30%</span>
+                                <span class="result-label">Delivery Improvement</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-value">20%</span>
+                                <span class="result-label">Fuel Savings</span>
+                            </div>
+                        </div>
+                        <p class="achievement">74% of US orders now ship from regional fulfillment centers</p>
+                    </div>
+                </div>
+
+                <div class="card case-study-card" data-company="ups">
+                    <div class="card__header">
+                        <h4>UPS ORION</h4>
+                        <span class="status status--info">Route Optimization</span>
+                    </div>
+                    <div class="card__body">
+                        <p>Advanced route optimization algorithm for daily delivery planning</p>
+                        <div class="results">
+                            <div class="result-item">
+                                <span class="result-value">15%</span>
+                                <span class="result-label">Cost Reduction</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-value">20%</span>
+                                <span class="result-label">Delivery Improvement</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-value">10%</span>
+                                <span class="result-label">Fuel Savings</span>
+                            </div>
+                        </div>
+                        <p class="achievement">Saves 100+ million miles annually, reducing CO2 emissions</p>
+                    </div>
+                </div>
+
+                <div class="card case-study-card" data-company="fedex">
+                    <div class="card__header">
+                        <h4>FedEx</h4>
+                        <span class="status status--warning">ML + Analytics</span>
+                    </div>
+                    <div class="card__body">
+                        <p>Real-time route adjustments using traffic and weather data</p>
+                        <div class="results">
+                            <div class="result-item">
+                                <span class="result-value">18%</span>
+                                <span class="result-label">Cost Reduction</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-value">22%</span>
+                                <span class="result-label">Delivery Improvement</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-value">12%</span>
+                                <span class="result-label">Fuel Savings</span>
+                            </div>
+                        </div>
+                        <p class="achievement">Improved delivery efficiency and customer satisfaction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section card">
+            <div class="card__header">
+                <h3>Export Results</h3>
+            </div>
+            <div class="card__body">
+                <div class="export-controls">
+                    <button id="export-pdf-btn" class="btn btn--outline">Export PDF Report</button>
+                    <button id="export-csv-btn" class="btn btn--outline">Export CSV Data</button>
+                    <button id="save-scenario-btn" class="btn btn--secondary">Save Scenario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
