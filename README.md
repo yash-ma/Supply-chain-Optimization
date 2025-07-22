@@ -4,7 +4,9 @@ Supply chain route optimization represents a critical challenge in modern logist
  increasingly complex distribution networks. This comprehensive project demonstrates how
  advanced graph algorithms and machine learning techniques can revolutionize logistics planning
  to achieve significant reductions in transportation costs and delivery times.
+ 
  Project Overview and Objectives
+ 
  The primary goal of this supply chain route optimization system is to develop an intelligent
  platform that leverages cutting-edge computational techniques to solve the Vehicle Routing
  Problem VRP) and its variants. The system integrates multiple optimization algorithms with
@@ -13,7 +15,9 @@ Supply chain route optimization represents a critical challenge in modern logist
  Graph representation of a supply chain network showing suppliers, ingredients, product recipes,
  intermediate products, final products, and shipping points connected with directional arrows to
  illustrate supply and delivery flow.
+ 
 Key Objectives
+
  Cost Reduction: Minimize total transportation costs through optimal route planning and
  resource allocation
  Delivery Time Optimization: Reduce overall delivery times while maintaining service level
